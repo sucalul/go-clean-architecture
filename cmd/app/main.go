@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -20,10 +24,26 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// ルーティング
-	e.GET("/api/v1/tasks", GetTasks())
+	// e.GET("/api/v1/tasks", handler1)
 
 	// サーバー起動
+	handler1 := func(w http.ResponseWriter, r *http.Request) {
+		var buf bytes.Buffer
+		enc := json.NewEncoder(&buf)
+		tasks := []*Task{}
+		if err := enc.Encode(&tasks); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(buf.String())
+
+		_, err := fmt.Fprint(w, buf.String())
+		if err != nil {
+			return
+		}
+	}
+	http.HandleFunc("/tasks", handler1)
 	e.Start(":8080")
+
 }
 
 type Task struct {
