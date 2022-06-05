@@ -3,7 +3,7 @@ package interactor
 import (
 	"context"
 
-	"github.com/yuya0729/echo-env/cmd/app/usecase/port"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/usecase/port"
 )
 
 type Task struct {

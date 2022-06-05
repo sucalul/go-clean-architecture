@@ -3,7 +3,7 @@ package geteway
 import (
 	"database/sql"
 
-	"github.com/yuya0729/echo-env/cmd/app/usecase/port"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/usecase/port"
 )
 
 type TaskRepository struct {
