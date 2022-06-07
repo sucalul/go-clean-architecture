@@ -1,4 +1,4 @@
-module github.com/yuya0729/echo-env
+module github.com/yuya0729/go-clean-architecture
 
 go 1.17
 

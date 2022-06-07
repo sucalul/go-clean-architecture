@@ -1,10 +1,9 @@
-package geteway
+package gateway
 
 import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 
 	"github.com/yuya0729/go-clean-architecture/cmd/app/entity"
@@ -15,28 +14,27 @@ type TaskRepository struct {
 	conn *sql.DB
 }
 
-func NewTaskRepository(conn *sql.DB) *port.TaskRepository {
+// NewTaskRepository はTaskRepositoryを返します．
+func NewTaskRepository(conn *sql.DB) port.TaskRepository {
 	return &TaskRepository{
 		conn: conn,
 	}
 }
 
+// GetDBConn はconnectionを取得します．
 func (t *TaskRepository) GetDBConn() *sql.DB {
 	return t.conn
 }
 
-func (t *TaskRepository) GetTasks(ctx context.Context) (*entity.Task, error) {
+// GetTaskList はDBからデータを取得します．
+func (t *TaskRepository) GetTaskList(ctx context.Context) (*entity.Task, error) {
 	conn := t.GetDBConn()
-	row, err := conn.Query("SELECT * FROM Tasks")
+	row := conn.QueryRowContext(ctx, "SELECT * FROM tasks")
 	task := entity.Task{}
-
 	err := row.Scan(&task.ID, &task.Name)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("Task Not Found.")
-		}
 		log.Println(err)
-		return nil, errors.New("Internal Server Error. adapter/gateway/GetTasks")
+		return nil, errors.New("internal Server Error. adapter/gateway/GetTaskList")
 	}
 	return &task, nil
 }
