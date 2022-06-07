@@ -3,11 +3,11 @@ package port
 import (
 	"context"
 
-	"github.com/yuya0729/go-clean-architecture/tree/develop/cmd/app/entity"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/entity"
 )
 
 type TaskInputPort interface {
-	GetTasks(ctx context.Context)
+	GetTaskList(ctx context.Context)
 }
 
 type TaskOutputPort interface {
@@ -15,8 +15,7 @@ type TaskOutputPort interface {
 	RenderError(error)
 }
 
-// taskのCRUDに対するDB用ポート
-
+// taskのCRUDに対するDB用のポート
 type TaskRepository interface {
-	GetTasks(ctx context.Context) (*entity.Task, error)
+	GetTaskList(ctx context.Context) (*entity.Task, error)
 }

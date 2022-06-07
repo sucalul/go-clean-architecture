@@ -1,21 +1,20 @@
-package drivers
+package driver
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 
 	_ "github.com/lib/pq"
 
-	"github.com/yuya0729/go-clean-architecture/tree/develop/cmd/app/adapter/controller"
-	"github.com/yuya0729/go-clean-architecture/tree/develop/cmd/app/adapter/geteway"
-	"github.com/yuya0729/go-clean-architecture/tree/develop/cmd/app/adapter/presenter"
-	"github.com/yuya0729/go-clean-architecture/tree/develop/cmd/app/usecase/interactor"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/adapter/controller"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/adapter/gateway"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/adapter/presenter"
+	"github.com/yuya0729/go-clean-architecture/cmd/app/usecase/interactor"
 )
 
-func Serve(addr string) {
-	dsn := fmt.Sprint("user=postgres host=postgres port=5432 dbname=postgres password=postgres sslmode=disable")
+func Serve() {
+	dsn := "user=postgres host=postgres port=5432 dbname=postgres password=postgres sslmode=disable"
 	conn, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Println(err)
@@ -25,13 +24,15 @@ func Serve(addr string) {
 	task := controller.Task{
 		OutputFactory: presenter.NewTaskOutputPort,
 		InputFactory:  interactor.NewTaskInputPort,
-		RepoFactory:   geteway.NewTaskRepository,
+		RepoFactory:   gateway.NewTaskRepository,
 		Conn:          conn,
 	}
-
-	http.HandleFunc("/api/v1/tasks", task.GetTasks)
-	err = http.ListenAndServe(addr, nil)
+	// task一覧の取得
+	http.HandleFunc("/api/v1/tasks", task.GetTaskList)
+	// TODO: high
+	// task作成のエンドポイント
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
-		log.Fatalf("Listen and serve faild")
+		log.Fatalf("Listen and serve failed. %+v", err)
 	}
 }
