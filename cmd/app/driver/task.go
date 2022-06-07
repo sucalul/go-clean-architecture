@@ -27,8 +27,10 @@ func Serve() {
 		RepoFactory:   gateway.NewTaskRepository,
 		Conn:          conn,
 	}
-
+	// task一覧の取得
 	http.HandleFunc("/api/v1/tasks", task.GetTaskList)
+	// TODO: high
+	// task作成のエンドポイント
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("Listen and serve failed. %+v", err)

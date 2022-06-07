@@ -24,6 +24,7 @@ func NewTaskOutputPort(w http.ResponseWriter) port.TaskOutputPort {
 func (t *Task) Render(task *entity.Task) {
 	t.w.WriteHeader(http.StatusOK)
 	// httpでentity.Task.Nameを出力
+	// ここでjsonにする？
 	fmt.Fprint(t.w, task.Name)
 }
 

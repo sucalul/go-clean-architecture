@@ -28,6 +28,8 @@ func (t *TaskRepository) GetDBConn() *sql.DB {
 
 // GetTaskList はDBからデータを取得します．
 func (t *TaskRepository) GetTaskList(ctx context.Context) (*entity.Task, error) {
+	// TODO: high
+	// jsonで返す
 	conn := t.GetDBConn()
 	row := conn.QueryRowContext(ctx, "SELECT * FROM tasks")
 	task := entity.Task{}
