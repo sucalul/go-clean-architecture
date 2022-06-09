@@ -17,3 +17,38 @@ make up
 
 ## Local server
 http://localhost:8080/api/v1/tasks
+
+## Clean Architecture
+- [実装クリーンアーキテクチャ](https://qiita.com/nrslib/items/a5f902c4defc83bd46b8#application-business-rules)メモ
+### Enterprise Business Rules
+- ビジネスロジック
+- どんなデータを扱うのか
+- ただの箱だけではなくロジックもここ
+
+### Application Business Rules
+- ソフトウェアは何ができるのか
+  - create user
+  - read users
+  - etc...
+
+### Interface Adapters
+- 入力
+  - Application Business Rulesに伝えるためのデータ加工
+- 永続化
+  - データの保存
+  - SQL叩く
+- 表示
+  - 結果の表示
+
+### Frameworks & Drivers
+- DBのconnectionの設定
+- ルーティング
+
+## まだわかってないこと
+- バリデーションはどこがやるのか
+  - ユーザー登録で電話番号に文字列が入ってきた
+  - method:GET /users/{id}
+    - idに存在しないuserのidが入ってきた
+
+- アクセス権限はどこがやるのか
+  - ログインしているユーザーだけリクエスト飛ばせる
